@@ -27,8 +27,8 @@ import { getServices,
   getAllTypeCategories,
 } from '../../components/ServiceRepository/service-repository'
 
-//import * as styles from './ServiceList.treat';
-//import cn from 'classnames'
+import * as styles from './ServiceList.treat';
+import cn from 'classnames'
 
 
 export interface ServiceListProps {
@@ -170,7 +170,7 @@ export default function ServiceList(props:ServiceListProps) {
                   </Stack>
                     {showNavigation()}
                 </GridColumn>
-                <GridColumn  span="3/12" className="filter">
+                <GridColumn  span="3/12" className={cn(styles.filter)}>
                 <SidebarAccordion  id="pricing_category" label="Verð">
                   <CategoryCheckBox label={PRICING_CATEGORY.FREE}    value={PRICING_CATEGORY.FREE}    checked={props.parameters.pricing.includes(PRICING_CATEGORY.FREE)}    onChange={({target})=>{updateCategoryCheckBox(target)}} />
                   <CategoryCheckBox label={PRICING_CATEGORY.USAGE}   value={PRICING_CATEGORY.USAGE}   checked={props.parameters.pricing.includes(PRICING_CATEGORY.USAGE)}   onChange={({target})=>{updateCategoryCheckBox(target)}} />
@@ -198,34 +198,32 @@ export default function ServiceList(props:ServiceListProps) {
                   <CategoryCheckBox label={ACCESS_CATEGORY.X_ROAD} value={ACCESS_CATEGORY.X_ROAD}  checked={props.parameters.access.includes(ACCESS_CATEGORY.X_ROAD)} onChange={({target})=>{updateCategoryCheckBox(target)}} />
                   <CategoryCheckBox label={ACCESS_CATEGORY.API_GW} value={ACCESS_CATEGORY.API_GW}  checked={props.parameters.access.includes(ACCESS_CATEGORY.API_GW)} onChange={({target})=>{updateCategoryCheckBox(target)}} />
                 </SidebarAccordion>
+
                 <SidebarAccordion id="filter_settings" label="Stillingar">
-
-                <CategoryCheckBox label="Velja"   value="select-all" checked={checkSettingsCheckAll}     onChange={onCheckSettingsCheckAllClick}
+                  <CategoryCheckBox label="Velja"   value="select-all" 
+                    checked={checkSettingsCheckAll}     onChange={onCheckSettingsCheckAllClick}
                     tooltip="Haka í eða úr öllum gildum í öllum flokkum."/>
-          <div>
-            <div>Leitaraðferð</div>
-          <RadioButton name="RadioButtonSearchMethod" id="SearchMethod1" label="Einn" value="1"
-            tooltip="Eitt gildi í einum flokk þarf að passa"
-            onChange={({ target }) => {
-            setRadioSearchMethod(target.value)
-            props.parameters.searchMethod = target.value === '1'? SERVICE_SEARCH_METHOD.MUST_CONTAIN_ONE_OF_CATEGORY : SERVICE_SEARCH_METHOD.MUST_CONTAIN_ONE_OF_EACH_CATEGORY;
-            setCheckSettingsSearchMethod(props.parameters.searchMethod)
-          }}
-          checked={radioSearchMethod === '1'}
-        />
-        <RadioButton name="RadioButtonSearchMethod" id="SearchMethod2" label="Allir" value="2"
-          tooltip="Eitt gildi í hverjum flokk þarf að passa"
-          onChange={({ target }) => {
-            setRadioSearchMethod(target.value)
-            props.parameters.searchMethod = target.value === '2'? SERVICE_SEARCH_METHOD.MUST_CONTAIN_ONE_OF_EACH_CATEGORY : SERVICE_SEARCH_METHOD.MUST_CONTAIN_ONE_OF_CATEGORY;
-            setCheckSettingsSearchMethod(props.parameters.searchMethod)
-          }}
-          checked={radioSearchMethod === '2'}
-        />
-        </div>
-
-
+                  <SidebarAccordion id="searchMethod" label="Leitaraðferð">
+                    <RadioButton name="RadioButtonSearchMethod" id="SearchMethod1" label="Einn" value="1"
+                      tooltip="Eitt gildi í einum flokk þarf að passa"
+                      onChange={({ target }) => {
+                      setRadioSearchMethod(target.value)
+                      props.parameters.searchMethod = target.value === '1'? SERVICE_SEARCH_METHOD.MUST_CONTAIN_ONE_OF_CATEGORY : SERVICE_SEARCH_METHOD.MUST_CONTAIN_ONE_OF_EACH_CATEGORY;
+                      setCheckSettingsSearchMethod(props.parameters.searchMethod)
+                    }}
+                    checked={radioSearchMethod === '1'}
+                  />
+                  <RadioButton name="RadioButtonSearchMethod" id="SearchMethod2" label="Allir" value="2"
+                    tooltip="Eitt gildi í hverjum flokk þarf að passa"
+                    onChange={({ target }) => {
+                      setRadioSearchMethod(target.value)
+                      props.parameters.searchMethod = target.value === '2'? SERVICE_SEARCH_METHOD.MUST_CONTAIN_ONE_OF_EACH_CATEGORY : SERVICE_SEARCH_METHOD.MUST_CONTAIN_ONE_OF_CATEGORY;
+                      setCheckSettingsSearchMethod(props.parameters.searchMethod)
+                    }}
+                    checked={radioSearchMethod === '2'}
+                  />
                   </SidebarAccordion>
+                </SidebarAccordion>
                 </GridColumn>
               </GridRow>
             </GridContainer>

@@ -55,10 +55,7 @@
   }
   
   body {
-      $color-service-status-unknown: lavender;
-      $color-service-status-ok: #00e4ca;
-      $color-service-status-warning: #fff066;
-      $color-service-status-error: #ff0250;
+
       .service-list {
 
           .navigation {
@@ -69,35 +66,6 @@
             text-align: center;
           }
       }
-      .service-card{
-          
-          .service-status {
-              background:$color-service-status-unknown;
-          }
-          .service-status.ok {
-              background:$color-service-status-ok;
-          }
-          .service-status.warning {
-              background:$color-service-status-warning;
-          }
-          .service-status.error {
-              background:$color-service-status-error;
-          }
-      }
-
-      .service-items {
-        padding-top:50px;
-      }
-      .filter {
-        margin-top:40px;
-      }
-      .filter button {
-        margin-top: 8px;
-      }
-      .filter .category-checkbox {
-        margin-top: 5px;
-      }
-      
   }
 
   
