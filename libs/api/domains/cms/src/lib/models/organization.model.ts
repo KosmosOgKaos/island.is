@@ -28,11 +28,16 @@ export class Organization {
 export const mapOrganization = ({
   fields,
   sys,
-}: IOrganization): Organization => ({
-  id: sys.id,
-  title: fields.title,
-  description: fields.description ?? '',
-  slug: fields.slug,
-  tag: fields.tag && fields.tag.map(mapOrganizationTag),
-  link: fields.link ?? '',
-})
+}: IOrganization): Organization => {
+  console.log('-sys', sys)
+  console.log('-fields', fields)
+
+  return {
+    id: sys.id,
+    title: fields.title,
+    description: fields.description ?? '',
+    slug: fields.slug,
+    tag: fields.tag && fields.tag.map(mapOrganizationTag),
+    link: fields.link ?? '',
+  }
+}

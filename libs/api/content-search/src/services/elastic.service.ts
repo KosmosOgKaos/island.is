@@ -7,15 +7,22 @@ import { environment } from '../environments/environment'
 import * as AWS from 'aws-sdk'
 import * as AwsConnector from 'aws-elasticsearch-connector'
 import { Injectable } from '@nestjs/common'
-import { SearcherInput, WebSearchAutocompleteInput } from '@island.is/api/schema'
+import {
+  SearcherInput,
+  WebSearchAutocompleteInput,
+} from '@island.is/api/schema'
 import {
   autocompleteTermQuery,
   AutocompleteTermResponse,
   AutocompleteTermRequestBody,
 } from '../queries/autocomplete'
 import { searchQuery, SearchRequestBody } from '../queries/search'
-import { MappedData } from '@island.is/elastic-indexing';
-import { documentByTypeQuery, DocumentByTypesInput, DocumentByTypesRequestBody } from '../queries/documentByTypes'
+import { MappedData } from '@island.is/elastic-indexing'
+import {
+  documentByTypeQuery,
+  DocumentByTypesInput,
+  DocumentByTypesRequestBody,
+} from '../queries/documentByTypes'
 
 const { elastic } = environment
 interface SyncRequest {
@@ -29,13 +36,13 @@ export class ElasticService {
     logger.debug('Created ES Service')
   }
 
-  async index(index: SearchIndexes, {_id, ...body}: MappedData) {
+  async index(index: SearchIndexes, { _id, ...body }: MappedData) {
     try {
       const client = await this.getClient()
       return await client.index({
         id: _id,
         index: index,
-        body
+        body,
       })
     } catch (error) {
       logger.error('Elastic request failed on index', error)
@@ -44,14 +51,18 @@ export class ElasticService {
   }
 
   async bulk(index: SearchIndexes, documents: SyncRequest) {
-    logger.info('Processing documents', {index, added: documents.add.length, removed: documents.remove.length})
-    
+    logger.info('Processing documents', {
+      index,
+      added: documents.add.length,
+      removed: documents.remove.length,
+    })
+
     const requests = []
     // if we have any documents to add add them to the request
     if (documents.add.length) {
-      documents.add.forEach(({_id, ...document}) => {
+      documents.add.forEach(({ _id, ...document }) => {
         requests.push({
-          index: { _index: index, _id }
+          index: { _index: index, _id },
         })
         requests.push(document)
         return requests
@@ -62,7 +73,7 @@ export class ElasticService {
     if (documents.remove.length) {
       documents.remove.forEach((_id) => {
         requests.push({
-          delete: { _index: index, _id }
+          delete: { _index: index, _id },
         })
       })
     }
@@ -87,7 +98,6 @@ export class ElasticService {
     return false
   }
 
-
   async findByQuery<ResponseBody, RequestBody>(
     index: SearchIndexes,
     query: RequestBody,
@@ -107,7 +117,7 @@ export class ElasticService {
     }
   }
 
-  async getDocumentsByTypes(index: SearchIndexes, query: DocumentByTypesInput ) {
+  async getDocumentsByTypes(index: SearchIndexes, query: DocumentByTypesInput) {
     const requestBody = documentByTypeQuery(query)
     const data = await this.findByQuery<
       SearchResponse<MappedData>,
@@ -140,13 +150,13 @@ export class ElasticService {
   }
 
   async search(index: SearchIndexes, query: SearcherInput) {
-    const {queryString, size, page, types} = query
-    
-    const requestBody = searchQuery({queryString, size, page, types})
-    const data = await this.findByQuery<
-      any,
-      SearchRequestBody
-    >(index, requestBody)
+    const { queryString, size, page, types } = query
+    const requestBody = searchQuery({ queryString, size, page, types })
+    const data = await this.findByQuery<any, SearchRequestBody>(
+      index,
+      requestBody,
+    )
+
     return data
   }
 

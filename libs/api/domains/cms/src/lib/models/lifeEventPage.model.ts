@@ -8,6 +8,10 @@ import { Image, mapImage } from './image.model'
 
 @ObjectType()
 export class LifeEventPage {
+  constructor(initializer: LifeEventPage) {
+    Object.assign(this, initializer)
+  }
+
   @Field(() => ID)
   id: string
 
@@ -32,7 +36,7 @@ export class LifeEventPage {
 
 export const mapLifeEventPage = ({
   fields,
-  sys
+  sys,
 }: ILifeEventPage): LifeEventPage => ({
   id: sys.id,
   title: fields.title,

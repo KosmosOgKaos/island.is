@@ -43,7 +43,7 @@ const STACK_WIDTH = 400
 
 type SearchState = {
   term: string
-  results?: SearchResult
+  results?: Partial<SearchResult>
   suggestions: string[]
   prefix: string
   isLoading: boolean
@@ -93,7 +93,7 @@ const useSearch = (locale: Locale, term?: string): SearchState => {
           query: {
             queryString: term,
             language: locale as ContentLanguage,
-            types: ['article']
+            types: ['article'],
           },
         },
       })
@@ -126,7 +126,7 @@ const useSearch = (locale: Locale, term?: string): SearchState => {
         setState({
           isLoading: false,
           term,
-          results,
+          results: results as any,
           suggestions,
           prefix,
         })

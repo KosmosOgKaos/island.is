@@ -3,7 +3,7 @@ import { ElasticService, SearchIndexes } from '@island.is/api/content-search'
 import { RequestBodySearch } from 'elastic-builder'
 import { ContentCategory } from './models/contentCategory.model'
 import { ContentItem } from './models/contentItem.model'
-import { SearchResult } from './models/searchResult.model'
+import { mapItems, SearchResult } from './models/searchResult.model'
 import { WebSearchAutocomplete } from './models/webSearchAutocomplete.model'
 import { ContentLanguage } from './enums/contentLanguage.enum'
 import { SearcherService } from '@island.is/api/schema'
@@ -32,7 +32,7 @@ export class ContentSearchService implements SearcherService {
     return obj
   }
 
-  async find(query: SearcherInput): Promise<SearchResult> {
+  async find(query: SearcherInput): Promise<any> {
     const { body } = await this.elasticService.search(
       this.getIndex(query.language),
       query,
@@ -42,6 +42,17 @@ export class ContentSearchService implements SearcherService {
       total: body.hits.total.value,
       // we map data when it goes into the index we can return it without mapping it here
       items: body.hits.hits.map((item) => JSON.parse(item._source.response)),
+      itemsNew: body.hits.hits.map((item) => {
+        // console.log('-item', item)
+        const hit = JSON.parse(item._source.response)
+
+        // console.log('-hit', hit)
+
+        const mapped = mapItems(hit, item._source.type)
+        // console.log('-mapped', mapped)
+
+        return mapped
+      }),
     }
   }
 

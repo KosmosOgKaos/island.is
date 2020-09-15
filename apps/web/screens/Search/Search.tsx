@@ -44,7 +44,8 @@ const PerPage = 10
 interface CategoryProps {
   q: string
   page: number
-  searchResults: GetSearchResultsDetailedQuery['searchResults']
+  // searchResults: GetSearchResultsDetailedQuery['searchResults']
+  searchResults: any
   namespace: GetNamespaceQuery['getNamespace']
 }
 
@@ -72,7 +73,6 @@ const Search: Screen<CategoryProps> = ({
 
   const sidebarCategories = searchResults.items.reduce((all, cur) => {
     const key = cur.categorySlug
-
     const item = all.find((x) => x.key === key)
 
     if (!item) {

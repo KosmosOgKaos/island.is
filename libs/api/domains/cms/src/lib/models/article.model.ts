@@ -10,6 +10,10 @@ import { SubArticle, mapSubArticle } from './subArticle.model'
 
 @ObjectType()
 export class Article {
+  constructor(initializer: Article) {
+    Object.assign(this, initializer)
+  }
+
   @Field(() => ID)
   id: string
 
@@ -47,18 +51,22 @@ export class Article {
   subArticles?: Array<SubArticle>
 }
 
-export const mapArticle = ({ fields, sys }: IArticle): Article => ({
-  id: sys.id,
-  contentStatus: fields.contentStatus,
-  title: fields.title,
-  shortTitle: fields.shortTitle ?? '',
-  slug: fields.slug,
-  content: (fields.content && JSON.stringify(fields.content)) ?? null,
-  category: fields.category?.fields,
-  group: fields.group?.fields,
-  subgroup: fields.subgroup?.fields,
-  organization: fields.organization && fields.organization.map(mapOrganization),
-  relatedArticles:
-    fields.relatedArticles && fields.relatedArticles.map(mapArticle),
-  subArticles: fields.subArticles && fields.subArticles.map(mapSubArticle),
-})
+export const mapArticle = ({ fields, sys }: IArticle): Article => {
+  console.log('-fields', fields)
+  console.log('-sys', sys)
+
+  return {
+    id: sys.id,
+    contentStatus: fields.contentStatus,
+    title: fields.title,
+    shortTitle: fields.shortTitle ?? '',
+    slug: fields.slug,
+    content: (fields.content && JSON.stringify(fields.content)) ?? null,
+    category: fields.category?.fields,
+    group: fields.group?.fields,
+    subgroup: fields.subgroup?.fields,
+    organization: (fields.organization ?? []).map(mapOrganization),
+    relatedArticles: (fields.relatedArticles ?? []).map(mapArticle),
+    subArticles: (fields.subArticles ?? []).map(mapSubArticle),
+  }
+}
