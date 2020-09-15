@@ -32,7 +32,6 @@ import cn from 'classnames'
 
 
 export interface ServiceListProps {
-  servicesList:Array<ServiceCardInformation>
   nextCursor: number
   prevCursor: number
   parameters: GetServicesParameters
@@ -45,31 +44,21 @@ export default function ServiceList(props:ServiceListProps) {
     props.parameters = { cursor:0, limit:null, owner:null, name:null, pricing:null, data:null, type:null, access:null, searchMethod:SERVICE_SEARCH_METHOD.MUST_CONTAIN_ONE_OF_CATEGORY };
   }
  
-  const showNavigation = () => {
-    return (
-      <div className="navigation">
-        <Button disabled={prevCursor === null} variant="text" onClick={() => onPageButtonClick(prevCursor)} leftIcon="arrowLeft">
-          Fyrri
-        </Button>
-        <Button disabled={nextCursor === null} variant="text" onClick={() => onPageButtonClick(nextCursor)} icon="arrowRight">
-          Næsta
-        </Button>     
-      </div>
-    )
-  }
-
   const selectAllCheckboxes = (select:boolean) => {
     props.parameters.cursor  = null;
     props.parameters.pricing = select? getAllPriceCategories()  : [];
     props.parameters.data    = select? getAllDataCategories()   : [];
     props.parameters.type    = select? getAllTypeCategories()   : [];
     props.parameters.access  = select? getAllAccessCategories() : [];
+    
     setStatusQueryString(createStatusQueryString());
+    setFirstGet(true);
   }
 
-  const onPageButtonClick = (nextCursor) => {
+  const onPageMoreButtonClick = () => {
     props.parameters.cursor = nextCursor;
-    setStatusQueryString(createStatusQueryString());
+    setFirstGet(false);
+    setNextFetch(nextCursor);
   }
   const onCheckSettingsCheckAllClick = event => {
     const selectAll = event.target.checked;
@@ -120,39 +109,55 @@ export default function ServiceList(props:ServiceListProps) {
     }
 
     setStatusQueryString(createStatusQueryString());
+    setFirstGet(true);
 
   }
 
   const createStatusQueryString = ():string => {
     let str:string = props.parameters.cursor === null? 'null':props.parameters.cursor.toString();
     str+= `|${props.parameters.searchMethod}|${props.parameters.pricing.sort().join()}|${props.parameters.data.sort().join()}|${props.parameters.type.sort().join()}|${props.parameters.access.sort().join()}`;
-    console.log(str);
     return str;  
   }
 
-  const [services,    setServices]   = useState<Array<ServiceCardInformation>>(props.servicesList);
+  const [services,    setServices]   = useState<Array<ServiceCardInformation>>(null);
   const [prevCursor,  setPrevCursor] = useState<number>(props.prevCursor);
   const [nextCursor,  setNextCursor] = useState<number>(props.nextCursor);
+  const [nextFetch,   setNextFetch] = useState<number>(null);
+  const [firstGet,    setFirstGet] = useState<boolean>(true);
   const [StatusQueryString, setStatusQueryString]= useState<string>(createStatusQueryString());
 
   //settings
   const [checkSettingsCheckAll,     setCheckSettingsCheckAll]     = useState<boolean>(false);
   const [checkSettingsSearchMethod, setCheckSettingsSearchMethod] = useState<SERVICE_SEARCH_METHOD>(props.parameters.searchMethod !== null ? props.parameters.searchMethod : SERVICE_SEARCH_METHOD.MUST_CONTAIN_ONE_OF_CATEGORY);
   const [radioSearchMethod,         setRadioSearchMethod]         = useState(checkSettingsSearchMethod === SERVICE_SEARCH_METHOD.MUST_CONTAIN_ONE_OF_CATEGORY? '1' : '2');
+    
   useEffect(() => {
-    const loadData = async () => {
+    
+    const appendData = async () => {
       const response = await getServices(props.parameters);
-      setServices(response.result);
-      setPrevCursor(response.prevCursor);
-      setNextCursor(response.nextCursor);
+          services.push(...response.result);    
+          setPrevCursor(response.prevCursor);
+          setNextCursor(response.nextCursor);
     }
-      loadData();
-  }, [
-      checkSettingsSearchMethod,   
-      StatusQueryString,
-      props.parameters]);
 
+    if (!firstGet && nextFetch) {
+        appendData();
+    }
+  }, [firstGet, nextFetch, props.parameters, services]); 
 
+  useEffect(() => {
+      
+      const loadData = async () => {
+        setFirstGet(true);
+        const response = await getServices(props.parameters);
+        setPrevCursor(response.prevCursor);
+        setNextCursor(response.nextCursor);
+        setServices(response.result);
+      }
+      if (firstGet)
+        loadData();
+    }, [firstGet, checkSettingsSearchMethod, StatusQueryString, props.parameters]); 
+    
   return (   
       <Layout left={
         <Box className="service-list">
@@ -160,7 +165,6 @@ export default function ServiceList(props:ServiceListProps) {
             <GridContainer>
               <GridRow className="service-items">
                 <GridColumn span="9/12">
-                  {showNavigation()}
                   <Stack space={2}>
                     {
                       services?.map( (item, index) => {
@@ -168,7 +172,11 @@ export default function ServiceList(props:ServiceListProps) {
                       })
                     }
                   </Stack>
-                    {showNavigation()}
+                  <div className={cn(styles.navigation)}>
+                    <Button disabled={nextCursor === null} variant="text" onClick={() => onPageMoreButtonClick()} icon="plus">
+                      Sækja fleiri
+                    </Button>
+                  </div>
                 </GridColumn>
                 <GridColumn  span="3/12" className={cn(styles.filter)}>
                 <SidebarAccordion  id="pricing_category" label="Verð">
@@ -209,7 +217,9 @@ export default function ServiceList(props:ServiceListProps) {
                       onChange={({ target }) => {
                       setRadioSearchMethod(target.value)
                       props.parameters.searchMethod = target.value === '1'? SERVICE_SEARCH_METHOD.MUST_CONTAIN_ONE_OF_CATEGORY : SERVICE_SEARCH_METHOD.MUST_CONTAIN_ONE_OF_EACH_CATEGORY;
-                      setCheckSettingsSearchMethod(props.parameters.searchMethod)
+                      setCheckSettingsSearchMethod(props.parameters.searchMethod);
+                      setStatusQueryString(createStatusQueryString());
+                      setFirstGet(true);
                     }}
                     checked={radioSearchMethod === '1'}
                   />
@@ -219,6 +229,8 @@ export default function ServiceList(props:ServiceListProps) {
                       setRadioSearchMethod(target.value)
                       props.parameters.searchMethod = target.value === '2'? SERVICE_SEARCH_METHOD.MUST_CONTAIN_ONE_OF_EACH_CATEGORY : SERVICE_SEARCH_METHOD.MUST_CONTAIN_ONE_OF_CATEGORY;
                       setCheckSettingsSearchMethod(props.parameters.searchMethod)
+                      setStatusQueryString(createStatusQueryString());
+                      setFirstGet(true);
                     }}
                     checked={radioSearchMethod === '2'}
                   />
@@ -245,7 +257,5 @@ ServiceList.getInitialProps = async ():Promise<ServiceListProps> => {
     access:getAllAccessCategories(),
     searchMethod:SERVICE_SEARCH_METHOD.MUST_CONTAIN_ONE_OF_CATEGORY
   };
-  //params.pricing = params.pricing.filter(e => e !== PRICING_CATEGORY.FREE)
-  console.log(JSON.parse(JSON.stringify(params)))
-return { parameters:params, prevCursor:null, nextCursor:null, servicesList: null };
+return { parameters:params, prevCursor:null, nextCursor:null};
 }

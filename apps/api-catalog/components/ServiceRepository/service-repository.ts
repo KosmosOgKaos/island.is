@@ -1,7 +1,7 @@
 import {SERVICE_STATUS } from  '..'
 import { ServiceCardInformation } from '../ServiceCard/service-card';
 
-const MAX_LIMIT = 6;
+const MAX_LIMIT = 3;
 
 export interface ServicesResult {
     result:Array<ServiceCardInformation>,
@@ -181,7 +181,6 @@ export async function getServices(parameters:GetServicesParameters):Promise<Serv
         );
     }
 
-    //console.log('filtered', JSON.parse(JSON.stringify(filtered)))
     if (!isValidNumber(params.cursor)) {
         params.cursor = null;
     }
@@ -189,7 +188,6 @@ export async function getServices(parameters:GetServicesParameters):Promise<Serv
         params.limit = null;
     }
     
-    //console.log("params method,pricing,data,type,access", params.searchMethod, params.pricing, params.data, params.type, params.access);
     return await limitServices(filtered, params.cursor, params.limit);
 }
 
