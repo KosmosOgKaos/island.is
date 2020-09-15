@@ -7,7 +7,6 @@ import { SearchResult } from './models/searchResult.model'
 import { WebSearchAutocomplete } from './models/webSearchAutocomplete.model'
 import { ContentLanguage } from './enums/contentLanguage.enum'
 import { SearcherService } from '@island.is/api/schema'
-import { logger } from '@island.is/logging'
 import { SearcherInput } from './dto/searcher.input'
 import { CategoriesInput } from './dto/categories.input'
 
@@ -39,7 +38,7 @@ export class ContentSearchService implements SearcherService {
     )
 
     return {
-      total: body.hits.total,
+      total: body.hits.total.value,
       // we map data when it goes into the index we can return it without mapping it here
       items: body.hits.hits.map((item) => JSON.parse(item._source.response)),
     }
