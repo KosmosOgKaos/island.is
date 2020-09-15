@@ -27,13 +27,17 @@ import * as styles from './ServiceList.treat';
 import cn from 'classnames'
 
 interface PropTypes {
+  top?: ReactNode
   left: ReactNode
   right?: ReactNode
 }
 
-export function ServiceLayout({ left, right }: PropTypes) {
+export function ServiceLayout({ top, left, right }: PropTypes) {
   return (
     <Box paddingX="gutter">
+      <ContentBlock >
+        {top}
+      </ContentBlock>
       <ContentBlock>
         <Columns align="right" space="gutter" collapseBelow="lg">
           <Column width="8/12">{left}</Column>
@@ -174,7 +178,15 @@ export default function ServiceList(props:ServiceListProps) {
     }, [firstGet, checkSettingsSearchMethod, StatusQueryString, props.parameters]); 
     
   return (   
-      <ServiceLayout left={
+      <ServiceLayout 
+      top={<div className={cn(styles.topSection)}>
+              <h1>API Vörulisti</h1>
+        <div className={cn(styles.topSectionText)}>
+          <p>Í miðlægum vörulista hins opinbera er hægt að lálgast upplýsingar um gögn og vefþjónustur á einfaldan og fljótvirkan hátt.</p>
+        </div>
+        </div>
+      }
+      left={
           <Box marginBottom="containerGutter" marginTop={1}>
                 <Box>
                     {
