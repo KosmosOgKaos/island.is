@@ -183,7 +183,7 @@ export default function ServiceList(props:ServiceListProps) {
                       })
                     }
                   <div className={cn(styles.navigation)}>
-                    <Button disabled={nextCursor === null} variant="text" onClick={() => onPageMoreButtonClick()} icon="plus">
+                    <Button disabled={nextCursor === null} variant="text" onClick={() => onPageMoreButtonClick()} icon="cheveron" >
                       Sækja fleiri
                     </Button>
                   </div>
