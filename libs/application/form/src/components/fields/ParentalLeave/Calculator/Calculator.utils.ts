@@ -14,3 +14,6 @@ export const calculateMonthly = (
 
   return Math.round(totalIncomeDuringPaternalLeave / monthsToSpread)
 }
+
+export const formatValue = (value: number) =>
+  value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
