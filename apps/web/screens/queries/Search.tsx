@@ -6,11 +6,23 @@ export const GET_SEARCH_RESULTS_QUERY = gql`
       total
       items {
         id
+        contentStatus
         title
-        content
         slug
-        category
-        group
+        category {
+          slug
+        }
+        organization {
+          id
+          title
+          slug
+        }
+        relatedArticles {
+          id
+        }
+        subArticles {
+          title
+        }
       }
     }
   }
@@ -30,16 +42,23 @@ export const GET_SEARCH_RESULTS_QUERY_DETAILED = gql`
       total
       items {
         id
+        contentStatus
         title
         slug
-        tag
-        content
-        categoryDescription
-        categorySlug
-        category
-        group
-        groupSlug
-        contentType
+        category {
+          slug
+        }
+        organization {
+          id
+          title
+          slug
+        }
+        relatedArticles {
+          id
+        }
+        subArticles {
+          title
+        }
       }
     }
   }

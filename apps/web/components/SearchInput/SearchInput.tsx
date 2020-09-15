@@ -35,6 +35,8 @@ import {
   SearchResult,
   QueryWebSearchAutocompleteArgs,
   AutocompleteTermResultsQuery,
+  Article,
+  LifeEventPage,
 } from '../../graphql/schema'
 import { GlobalNamespaceContext } from '@island.is/web/context/GlobalNamespaceContext/GlobalNamespaceContext'
 
@@ -43,7 +45,10 @@ const STACK_WIDTH = 400
 
 type SearchState = {
   term: string
-  results?: SearchResult
+  results?: {
+    total: number
+    items: (Article | LifeEventPage)[]
+  }
   suggestions: string[]
   prefix: string
   isLoading: boolean
@@ -93,7 +98,7 @@ const useSearch = (locale: Locale, term?: string): SearchState => {
           query: {
             queryString: term,
             language: locale as ContentLanguage,
-            types: ['article']
+            types: ['article'],
           },
         },
       })
