@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, ReactNode } from 'react'
 import {  Box,  
-  Stack,  
   Button, 
-  GridContainer, 
-  GridRow, 
-  GridColumn, 
-  SidebarAccordion, RadioButton 
+  SidebarAccordion, RadioButton, ContentBlock, Columns, Column 
 } from '@island.is/island-ui/core'
 
-import { Layout, 
+import {  
   ServiceCard,
   ServiceCardInformation, 
   CategoryCheckBox
@@ -29,6 +25,28 @@ import { getServices,
 
 import * as styles from './ServiceList.treat';
 import cn from 'classnames'
+
+interface PropTypes {
+  left: ReactNode
+  right?: ReactNode
+}
+
+export function ServiceLayout({ left, right }: PropTypes) {
+  return (
+    <Box paddingX="gutter">
+      <ContentBlock>
+        <Columns align="right" space="gutter" collapseBelow="lg">
+          <Column width="8/12">{left}</Column>
+          <Column width="3/12">
+            <Box paddingLeft={[0, 0, 0, 8, 15]} width="full">
+              {right}
+            </Box>
+          </Column>
+        </Columns>
+      </ContentBlock>
+    </Box>
+  )
+}
 
 
 export interface ServiceListProps {
@@ -120,7 +138,6 @@ export default function ServiceList(props:ServiceListProps) {
   }
 
   const [services,    setServices]   = useState<Array<ServiceCardInformation>>(null);
-  const [prevCursor,  setPrevCursor] = useState<number>(props.prevCursor);
   const [nextCursor,  setNextCursor] = useState<number>(props.nextCursor);
   const [nextFetch,   setNextFetch] = useState<number>(null);
   const [firstGet,    setFirstGet] = useState<boolean>(true);
@@ -136,7 +153,6 @@ export default function ServiceList(props:ServiceListProps) {
     const appendData = async () => {
       const response = await getServices(props.parameters);
           services.push(...response.result);    
-          setPrevCursor(response.prevCursor);
           setNextCursor(response.nextCursor);
     }
 
@@ -150,7 +166,6 @@ export default function ServiceList(props:ServiceListProps) {
       const loadData = async () => {
         setFirstGet(true);
         const response = await getServices(props.parameters);
-        setPrevCursor(response.prevCursor);
         setNextCursor(response.nextCursor);
         setServices(response.result);
       }
@@ -159,26 +174,27 @@ export default function ServiceList(props:ServiceListProps) {
     }, [firstGet, checkSettingsSearchMethod, StatusQueryString, props.parameters]); 
     
   return (   
-      <Layout left={
-        <Box className="service-list">
+      <ServiceLayout left={
           <Box marginBottom="containerGutter" marginTop={1}>
-            <GridContainer>
-              <GridRow className="service-items">
-                <GridColumn span="9/12">
-                  <Stack space={2}>
+                <Box>
                     {
                       services?.map( (item, index) => {
                         return <ServiceCard key={index} service={item} />
                       })
                     }
-                  </Stack>
                   <div className={cn(styles.navigation)}>
                     <Button disabled={nextCursor === null} variant="text" onClick={() => onPageMoreButtonClick()} icon="plus">
                       Sækja fleiri
                     </Button>
                   </div>
-                </GridColumn>
-                <GridColumn  span="3/12" className={cn(styles.filter)}>
+                </Box>
+                
+          </Box>
+      } 
+      right={
+        <Box  className={cn(styles.filter)}>
+              <h4>Filter:</h4>
+              <div className={cn(styles.filterItem)}>
                 <SidebarAccordion  id="pricing_category" label="Verð">
                   <CategoryCheckBox label={PRICING_CATEGORY.FREE}    value={PRICING_CATEGORY.FREE}    checked={props.parameters.pricing.includes(PRICING_CATEGORY.FREE)}    onChange={({target})=>{updateCategoryCheckBox(target)}} />
                   <CategoryCheckBox label={PRICING_CATEGORY.USAGE}   value={PRICING_CATEGORY.USAGE}   checked={props.parameters.pricing.includes(PRICING_CATEGORY.USAGE)}   onChange={({target})=>{updateCategoryCheckBox(target)}} />
@@ -187,7 +203,8 @@ export default function ServiceList(props:ServiceListProps) {
                   <CategoryCheckBox label={PRICING_CATEGORY.YEARLY}  value={PRICING_CATEGORY.YEARLY}  checked={props.parameters.pricing.includes(PRICING_CATEGORY.YEARLY)}  onChange={({target})=>{updateCategoryCheckBox(target)}} />
                   <CategoryCheckBox label={PRICING_CATEGORY.CUSTOM}  value={PRICING_CATEGORY.CUSTOM}  checked={props.parameters.pricing.includes(PRICING_CATEGORY.CUSTOM)}  onChange={({target})=>{updateCategoryCheckBox(target)}} />
                 </SidebarAccordion>
-
+              </div>
+              <div className={cn(styles.filterItem)}>
                 <SidebarAccordion id="data_category" label="Gögn">
                   <CategoryCheckBox label={DATA_CATEGORY.PUBLIC}    value={DATA_CATEGORY.PUBLIC}    checked={props.parameters.data.includes(DATA_CATEGORY.PUBLIC)}    onChange={({target})=>{updateCategoryCheckBox(target)}} />
                   <CategoryCheckBox label={DATA_CATEGORY.OFFICIAL}  value={DATA_CATEGORY.OFFICIAL}  checked={props.parameters.data.includes(DATA_CATEGORY.OFFICIAL)}  onChange={({target})=>{updateCategoryCheckBox(target)}} />
@@ -195,59 +212,64 @@ export default function ServiceList(props:ServiceListProps) {
                   <CategoryCheckBox label={DATA_CATEGORY.HEALTH}    value={DATA_CATEGORY.HEALTH}    checked={props.parameters.data.includes(DATA_CATEGORY.HEALTH)}    onChange={({target})=>{updateCategoryCheckBox(target)}} />
                   <CategoryCheckBox label={DATA_CATEGORY.FINANCIAL} value={DATA_CATEGORY.FINANCIAL} checked={props.parameters.data.includes(DATA_CATEGORY.FINANCIAL)} onChange={({target})=>{updateCategoryCheckBox(target)}} />
                 </SidebarAccordion>
-
+              </div>
+              <div className={cn(styles.filterItem)}>
                 <SidebarAccordion id="type_category" label="Gerð">
                   <CategoryCheckBox label={TYPE_CATEGORY.REACT}   value={TYPE_CATEGORY.REACT}   checked={props.parameters.type.includes(TYPE_CATEGORY.REACT)}   onChange={({target})=>{updateCategoryCheckBox(target)}} />
                   <CategoryCheckBox label={TYPE_CATEGORY.SOAP}    value={TYPE_CATEGORY.SOAP}    checked={props.parameters.type.includes(TYPE_CATEGORY.SOAP)}    onChange={({target})=>{updateCategoryCheckBox(target)}} />
                   <CategoryCheckBox label={TYPE_CATEGORY.GRAPHQL} value={TYPE_CATEGORY.GRAPHQL} checked={props.parameters.type.includes(TYPE_CATEGORY.GRAPHQL)} onChange={({target})=>{updateCategoryCheckBox(target)}} />
                 </SidebarAccordion>
-
+              </div>
+              <div className={cn(styles.filterItem)}>
                 <SidebarAccordion id="access_category" label="Aðgangur">
                   <CategoryCheckBox label={ACCESS_CATEGORY.X_ROAD} value={ACCESS_CATEGORY.X_ROAD}  checked={props.parameters.access.includes(ACCESS_CATEGORY.X_ROAD)} onChange={({target})=>{updateCategoryCheckBox(target)}} />
                   <CategoryCheckBox label={ACCESS_CATEGORY.API_GW} value={ACCESS_CATEGORY.API_GW}  checked={props.parameters.access.includes(ACCESS_CATEGORY.API_GW)} onChange={({target})=>{updateCategoryCheckBox(target)}} />
                 </SidebarAccordion>
-
+              </div>
+              <div className={cn(styles.filterItem)}>
                 <SidebarAccordion id="filter_settings" label="Stillingar">
                   <CategoryCheckBox label="Velja"   value="select-all" 
                     checked={checkSettingsCheckAll}     onChange={onCheckSettingsCheckAllClick}
                     tooltip="Haka í eða úr öllum gildum í öllum flokkum."/>
-                  <SidebarAccordion id="searchMethod" label="Leitaraðferð">
-                    <RadioButton name="RadioButtonSearchMethod" id="SearchMethod1" label="Einn" value="1"
-                      tooltip="Eitt gildi í einum flokk þarf að passa"
-                      onChange={({ target }) => {
-                      setRadioSearchMethod(target.value)
-                      props.parameters.searchMethod = target.value === '1'? SERVICE_SEARCH_METHOD.MUST_CONTAIN_ONE_OF_CATEGORY : SERVICE_SEARCH_METHOD.MUST_CONTAIN_ONE_OF_EACH_CATEGORY;
-                      setCheckSettingsSearchMethod(props.parameters.searchMethod);
-                      setStatusQueryString(createStatusQueryString());
-                      setFirstGet(true);
-                    }}
-                    checked={radioSearchMethod === '1'}
-                  />
-                  <RadioButton name="RadioButtonSearchMethod" id="SearchMethod2" label="Allir" value="2"
-                    tooltip="Eitt gildi í hverjum flokk þarf að passa"
-                    onChange={({ target }) => {
-                      setRadioSearchMethod(target.value)
-                      props.parameters.searchMethod = target.value === '2'? SERVICE_SEARCH_METHOD.MUST_CONTAIN_ONE_OF_EACH_CATEGORY : SERVICE_SEARCH_METHOD.MUST_CONTAIN_ONE_OF_CATEGORY;
-                      setCheckSettingsSearchMethod(props.parameters.searchMethod)
-                      setStatusQueryString(createStatusQueryString());
-                      setFirstGet(true);
-                    }}
-                    checked={radioSearchMethod === '2'}
-                  />
-                  </SidebarAccordion>
+                    <div className={cn(styles.filterItem)}>
+                      <SidebarAccordion id="searchMethod" label="Leitaraðferð">
+                        <RadioButton name="RadioButtonSearchMethod" id="SearchMethod1" label="Einn" value="1"
+                          tooltip="Eitt gildi í einum flokk þarf að passa"
+                          onChange={({ target }) => {
+                          setRadioSearchMethod(target.value)
+                          props.parameters.searchMethod = target.value === '1'? SERVICE_SEARCH_METHOD.MUST_CONTAIN_ONE_OF_CATEGORY : SERVICE_SEARCH_METHOD.MUST_CONTAIN_ONE_OF_EACH_CATEGORY;
+                          setCheckSettingsSearchMethod(props.parameters.searchMethod);
+                          setStatusQueryString(createStatusQueryString());
+                          setFirstGet(true);
+                        }}
+                        checked={radioSearchMethod === '1'}
+                      />
+                        <div className={cn(styles.radioButton)}>
+                          <RadioButton name="RadioButtonSearchMethod" id="SearchMethod2" label="Allir" value="2"
+                            tooltip="Eitt gildi í hverjum flokk þarf að passa"
+                            onChange={({ target }) => {
+                              setRadioSearchMethod(target.value)
+                              props.parameters.searchMethod = target.value === '2'? SERVICE_SEARCH_METHOD.MUST_CONTAIN_ONE_OF_EACH_CATEGORY : SERVICE_SEARCH_METHOD.MUST_CONTAIN_ONE_OF_CATEGORY;
+                              setCheckSettingsSearchMethod(props.parameters.searchMethod)
+                              setStatusQueryString(createStatusQueryString());
+                              setFirstGet(true);
+                            }}
+                            checked={radioSearchMethod === '2'}
+                          />
+                        </div>
+                      </SidebarAccordion>
+                    </div>
                 </SidebarAccordion>
-                </GridColumn>
-              </GridRow>
-            </GridContainer>
+              </div>
           </Box>
-        </Box>
       } />
   )
 }
 
 ServiceList.getInitialProps = async ():Promise<ServiceListProps> => {
 
-  const params:GetServicesParameters = { cursor:null, 
+  const params:GetServicesParameters = { 
+    cursor:null, 
     limit:null, 
     owner:null,
     name:null, 
