@@ -27,6 +27,12 @@ export const ParentalLeave: ApplicationTemplate<
       .min(0)
       .max(6),
     spread: z.number().max(24),
+    approveSpreadCalculations: z
+      .boolean()
+      .refine(
+        (v) => v === true,
+        'You must agree to these calculations to continue',
+      ),
     periods: z.array(
       z.object({
         start: z.date(),

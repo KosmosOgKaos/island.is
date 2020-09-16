@@ -10,7 +10,6 @@ import { calculateMonthly, formatValue } from './Calculator.utils'
 import * as styles from './Calculator.treat'
 
 const ParentalLeaveCalculations: FC<FieldBaseProps> = ({
-  error,
   field,
   formValue,
 }) => {
@@ -67,54 +66,41 @@ const ParentalLeaveCalculations: FC<FieldBaseProps> = ({
         padding={4}
       >
         <Typography variant="h5">Samþykkirðu þessa upphæð?</Typography>
-        <Box display="flex" marginTop={3}>
-          <Box marginRight={5}>
-            <RadioButton
-              // key={`${id}-${index}`}
-              id="yes"
-              key="yes"
-              onChange={({ target }) => {
-                // clearErrors(id)
-                // onChange(target.value)
-                // setValue(id, target.value)
-              }}
-              // checked={option.value === value}
-              checked={false}
-              // id={`${id}-${index}`}
-              // name={`${id}`}
-              name="yes"
-              // label={option.label}
-              label="Já"
-              // value={option.value}
-              value={1}
-              // errorMessage={index === options.length - 1 ? error : undefined}
-              // hasError={error !== undefined}
-            />
-          </Box>
-          <Box>
-            <RadioButton
-              // key={`${id}-${index}`}
-              id="no"
-              key="no"
-              onChange={({ target }) => {
-                // clearErrors(id)
-                // onChange(target.value)
-                // setValue(id, target.value)
-              }}
-              // checked={option.value === value}
-              checked={false}
-              // id={`${id}-${index}`}
-              // name={`${id}`}
-              name="no"
-              // label={option.label}
-              label="Nei, vil endurskoðun"
-              // value={option.value}
-              value={0}
-              // errorMessage={index === options.length - 1 ? error : undefined}
-              // hasError={error !== undefined}
-            />
-          </Box>
-        </Box>
+        <Controller
+          defaultValue=""
+          rules={{ required: true }}
+          name={'approveSpreadCalculations'}
+          render={({ onChange, value }) => (
+            <Box display="flex" marginTop={3}>
+              <Box marginRight={5}>
+                <RadioButton
+                  name="agree"
+                  id="yes"
+                  label="Já"
+                  value={1}
+                  onChange={() => {
+                    clearErrors(id)
+                    onChange(true)
+                  }}
+                  checked={value === true}
+                />
+              </Box>
+              <Box>
+                <RadioButton
+                  name="agree"
+                  id="no"
+                  label="Nei, vil endurskoðun"
+                  value={0}
+                  onChange={() => {
+                    clearErrors(id)
+                    onChange(false)
+                  }}
+                  checked={value === false}
+                />
+              </Box>
+            </Box>
+          )}
+        />
       </Box>
     </Box>
   )
