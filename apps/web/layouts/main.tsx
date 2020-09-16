@@ -12,6 +12,9 @@ import { NextComponentType, NextPageContext } from 'next'
 import { Screen, GetInitialPropsContext } from '../types'
 import { MD5 } from 'crypto-js'
 import Cookies from 'js-cookie'
+import * as Sentry from '@sentry/node'
+import { RewriteFrames } from '@sentry/integrations'
+import { useRouter } from 'next/router'
 
 import { Header, PageLoader, FixedNav, SkipToMainContent } from '../components'
 import { GET_MENU_QUERY } from '../screens/queries/Menu'
@@ -32,7 +35,7 @@ import { MenuTabsContext } from '../context/MenuTabsContext/MenuTabsContext'
 import useRouteNames from '../i18n/useRouteNames'
 import { useI18n } from '../i18n'
 import { GET_ALERT_BANNER_QUERY } from '../screens/queries/AlertBanner'
-import { AlertBanner as AlertBannerSchema } from '@island.is/api/schema'
+import { environment } from '../environments/environment'
 
 export interface LayoutProps {
   showSearchInHeader?: boolean
@@ -46,7 +49,22 @@ export interface LayoutProps {
   footerMiddleMenu?: FooterLinkProps[]
   footerTagsMenu?: FooterLinkProps[]
   namespace: Record<string, string | string[]>
-  alertBannerContent?: AlertBannerSchema
+  alertBannerContent?: GetAlertBannerQuery['getAlertBanner']
+}
+
+if (environment.sentryDsn) {
+  Sentry.init({
+    dsn: environment.sentryDsn,
+    enabled: environment.production,
+    integrations: [
+      new RewriteFrames({
+        iteratee: (frame) => {
+          frame.filename = frame.filename.replace(`~/.next`, 'app:///_next')
+          return frame
+        },
+      }),
+    ],
+  })
 }
 
 const Layout: NextComponentType<
@@ -70,6 +88,24 @@ const Layout: NextComponentType<
 }) => {
   const { activeLocale } = useI18n()
   const { makePath } = useRouteNames(activeLocale)
+  const { route, pathname, query, asPath } = useRouter()
+
+  Sentry.configureScope((scope) => {
+    scope.setExtra('lang', activeLocale)
+
+    scope.setContext('router', {
+      route,
+      pathname,
+      query,
+      asPath,
+    })
+  })
+
+  Sentry.addBreadcrumb({
+    category: 'pages/main',
+    message: `Rendering from ${process.browser ? 'browser' : 'server'}`,
+    level: Sentry.Severity.Debug,
+  })
 
   const menuTabs = [
     {
@@ -91,6 +127,7 @@ const Layout: NextComponentType<
   ]
 
   const alertBannerId = MD5(JSON.stringify(alertBannerContent)).toString()
+
   return (
     <GlobalNamespaceContext.Provider value={{ globalNamespace: namespace }}>
       <Page>
@@ -218,7 +255,10 @@ const Layout: NextComponentType<
   )
 }
 
-Layout.getInitialProps = async ({ apolloClient, locale }) => {
+Layout.getInitialProps = async ({
+  apolloClient,
+  locale,
+}): Promise<LayoutProps> => {
   const lang = locale ?? 'is' // Defaulting to is when locale is undefined
 
   const [

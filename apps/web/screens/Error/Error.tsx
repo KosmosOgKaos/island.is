@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { Screen } from '@island.is/web/types'
 import { Typography, Box } from '@island.is/island-ui/core'
 import { I18nContext } from '@island.is/web/i18n/I18n'
+
 import * as styles from './Error.treat'
 
 // We'll use these defaults if the top-level (screen) component was unable to
