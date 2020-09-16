@@ -3,11 +3,12 @@ import { Controller, useFormContext } from 'react-hook-form'
 
 import { FieldBaseProps } from '../../../../types'
 import { Typography, Box, RadioButton } from '@island.is/island-ui/core'
-import Slider from './components/Slider'
+import Slider from '../components/Slider'
 
 import { calculateMonthly, formatValue } from './Calculator.utils'
 
 import * as styles from './Calculator.treat'
+import { theme } from '@island.is/island-ui/theme'
 
 const ParentalLeaveCalculations: FC<FieldBaseProps> = ({
   field,
@@ -16,11 +17,17 @@ const ParentalLeaveCalculations: FC<FieldBaseProps> = ({
   const { id } = field
   const { clearErrors } = useFormContext()
   const [amount, setAmount] = useState<number>(294.037)
-  const [months, setMonths] = useState<number>(6)
+  const [monthsToUse] = useState<number>(formValue.usage || 1)
+  const [monthsToSpread, setMonthsToSpread] = useState<number>(1)
+
+  const maxMonths = 24
 
   useEffect(() => {
-    setAmount(calculateMonthly(600000, formValue.usage, months))
-  }, [months])
+    setAmount(calculateMonthly(600000, monthsToUse, monthsToSpread))
+  }, [monthsToSpread])
+
+  const formatLabel = (count: number) =>
+    count <= 1 ? `${count} mánuð` : `${count} mánuði`
 
   return (
     <Box marginBottom={6}>
@@ -30,7 +37,7 @@ const ParentalLeaveCalculations: FC<FieldBaseProps> = ({
       <Typography variant="h4" as="p">
         Áætlaður réttur þinn á mánuði í{' '}
         <span className={styles.monthsLabelWrapper}>
-          <span className={styles.monthsLabel}>6 mánuði</span>
+          <span className={styles.monthsLabel}>{formatLabel(monthsToUse)}</span>
         </span>{' '}
         miðað við 100% orlof.
       </Typography>
@@ -43,17 +50,29 @@ const ParentalLeaveCalculations: FC<FieldBaseProps> = ({
           name={id}
           render={({ onChange, value }) => (
             <Slider
-              snap={false}
+              min={monthsToSpread}
+              max={maxMonths}
               step={1}
-              min={6}
-              max={24}
-              currentIndex={value || months}
-              onChange={(selectedMonths: number) => {
-                clearErrors(id)
-                onChange(selectedMonths)
-                setMonths(selectedMonths)
+              snap={false}
+              trackStyle={{ gridTemplateRows: 8 }}
+              calculateCellStyle={(index: number) => {
+                const isActive =
+                  (value && index < value) || index < monthsToSpread
+                return {
+                  background: isActive
+                    ? theme.color.mint400
+                    : theme.color.dark200,
+                }
               }}
+              showMinMaxLabels
+              showToolTip
               label={{ singular: 'mánuður', plural: 'mánuðir' }}
+              currentIndex={monthsToSpread}
+              onChange={(selectedMonthsToSpread: number) => {
+                clearErrors(id)
+                onChange(selectedMonthsToSpread)
+                setMonthsToSpread(selectedMonthsToSpread)
+              }}
             />
           )}
         />
