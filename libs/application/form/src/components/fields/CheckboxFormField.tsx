@@ -9,7 +9,7 @@ interface Props extends FieldBaseProps {
   field: CheckboxField
 }
 const CheckboxFormField: FC<Props> = ({
-  error,
+  errors,
   showFieldName = false,
   field,
   formValue,
@@ -24,7 +24,7 @@ const CheckboxFormField: FC<Props> = ({
           id={id}
           name={`${id}`}
           defaultValue={getValueViaPath(formValue, id, [])}
-          error={error}
+          error={getValueViaPath(errors, id, undefined)}
           options={options}
         />
       </Box>

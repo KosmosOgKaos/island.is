@@ -10,7 +10,7 @@ interface Props extends FieldBaseProps {
 const RadioFormField: FC<Props> = ({
   showFieldName = false,
   field,
-  error,
+  errors,
   formValue,
 }) => {
   const { id, name, options } = field
@@ -20,7 +20,7 @@ const RadioFormField: FC<Props> = ({
       <Box paddingTop={2}>
         <RadioController
           id={id}
-          error={error}
+          error={getValueViaPath(errors, id, undefined)}
           name={`${id}`}
           defaultValue={getValueViaPath(formValue, id)}
           options={options}

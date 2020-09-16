@@ -89,7 +89,7 @@ export const ParentalLeaveForm: Form = buildForm({
               {
                 id: 'periods',
                 name: 'Viltu breyta eða skipta upp tímabilinu?',
-                component: CustomFieldComponents.PARENTAL_LEAVE_CALCULATIONS,
+                component: CustomFieldComponents.PARENTAL_LEAVE_PERIODS,
               },
               {},
             ),

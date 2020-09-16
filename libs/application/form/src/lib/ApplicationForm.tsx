@@ -1,6 +1,5 @@
 import React, { FC, useReducer } from 'react'
 import { Application } from '@island.is/application/template'
-import * as z from 'zod'
 import FormProgress from '../components/FormProgress/'
 import Sidebar from '../components/Sidebar'
 import Screen from '../components/Screen'
@@ -25,7 +24,7 @@ export const ApplicationForm: FC<{ application: Application }> = ({
     ApplicationReducer,
     {
       application,
-      dataSchema: z.object({}),
+      dataSchema: undefined,
       form: undefined,
       formLeaves: [],
       activeSection: 0,

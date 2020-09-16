@@ -68,7 +68,7 @@ interface Props extends FieldBaseProps {
 }
 const FileUploadFormField: FC<Props> = ({
   applicationId,
-  error,
+  errors,
   field,
   formValue,
 }) => {
@@ -100,6 +100,8 @@ const FileUploadFormField: FC<Props> = ({
     setValue(id, uploadAnswer)
   }, [state, id, setValue])
 
+  let fieldError = getValueViaPath(errors, id, undefined)
+
   const uploadFileFlow = async (file: UploadFile) => {
     try {
       // 1. Get the upload URL
@@ -130,7 +132,7 @@ const FileUploadFormField: FC<Props> = ({
       // Done!
       return Promise.resolve({ url: response.url, key: fields.key })
     } catch (e) {
-      error = e
+      fieldError = e
       return Promise.reject(e)
     }
   }
@@ -230,7 +232,7 @@ const FileUploadFormField: FC<Props> = ({
                 buttonLabel="Select documents to upload"
                 onChange={onFileChange}
                 onRemove={onRemoveFile}
-                errorMessage={error || uploadError}
+                errorMessage={fieldError || uploadError}
               />
             </Box>
           )

@@ -2,12 +2,13 @@ import React, { FC } from 'react'
 import { SelectField } from '@island.is/application/template'
 import { SelectController, Typography, Box } from '@island.is/island-ui/core'
 import { FieldBaseProps } from '../../types'
+import { getValueViaPath } from '../../utils'
 
 interface Props extends FieldBaseProps {
   field: SelectField
 }
 const SelectFormField: FC<Props> = ({
-  error,
+  errors,
   showFieldName = false,
   field,
 }) => {
@@ -20,7 +21,7 @@ const SelectFormField: FC<Props> = ({
         <SelectController
           label={name}
           name={id}
-          error={error}
+          error={getValueViaPath(errors, id, undefined)}
           id={id}
           options={options}
           placeholder={placeholder}

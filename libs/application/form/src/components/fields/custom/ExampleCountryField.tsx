@@ -10,6 +10,7 @@ import {
   Typography,
 } from '@island.is/island-ui/core'
 import { FieldBaseProps } from '../../../types'
+import { getValueViaPath } from '../../../utils'
 
 interface Props extends FieldBaseProps {
   field: CustomField
@@ -18,7 +19,7 @@ interface Props extends FieldBaseProps {
 // This component is a pure example of how flexible the application system engine truly is
 // It shows how to update multiple schema values, async, hidden, and shows how to access
 // already answered questions and other fields even
-const ExampleCountryField: FC<Props> = ({ error, field, formValue }) => {
+const ExampleCountryField: FC<Props> = ({ errors, field, formValue }) => {
   const { clearErrors, register } = useFormContext()
   const { id } = field
   const [options, setOptions] = useState<AsyncSearchOption[]>([])
@@ -49,6 +50,8 @@ const ExampleCountryField: FC<Props> = ({ error, field, formValue }) => {
         }
       })
   }
+
+  const error = getValueViaPath(errors, id, undefined)
 
   return (
     <>

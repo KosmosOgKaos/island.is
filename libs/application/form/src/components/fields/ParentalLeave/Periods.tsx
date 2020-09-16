@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { FieldBaseProps } from '../../../types'
 
 const ParentalLeavePeriods: FC<FieldBaseProps> = ({
-  error,
+  errors,
   field,
   formValue,
 }) => {

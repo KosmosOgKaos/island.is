@@ -9,25 +9,36 @@ import { calculateMonthly, formatValue } from './Calculator.utils'
 
 import * as styles from './Calculator.treat'
 import { theme } from '@island.is/island-ui/theme'
+import { getValueViaPath } from '../../../../utils'
 
 const ParentalLeaveCalculations: FC<FieldBaseProps> = ({
+  errors,
   field,
   formValue,
 }) => {
   const { id } = field
   const { clearErrors } = useFormContext()
   const [amount, setAmount] = useState<number>(294.037)
-  const [monthsToUse] = useState<number>(formValue.usage || 1)
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
+  const monthsToUse = (formValue.usage as number) || 1
   const [monthsToSpread, setMonthsToSpread] = useState<number>(1)
 
   const maxMonths = 24
 
   useEffect(() => {
     setAmount(calculateMonthly(600000, monthsToUse, monthsToSpread))
-  }, [monthsToSpread])
+  }, [monthsToSpread, monthsToUse])
 
   const formatLabel = (count: number) =>
     count <= 1 ? `${count} mánuð` : `${count} mánuði`
+
+  const approvalError = getValueViaPath(
+    errors,
+    'approveSpreadCalculations',
+    undefined,
+  )
 
   return (
     <Box marginBottom={6}>
@@ -46,7 +57,7 @@ const ParentalLeaveCalculations: FC<FieldBaseProps> = ({
       </Typography>
       <Box marginTop={8}>
         <Controller
-          defaultValue=""
+          defaultValue={monthsToSpread}
           name={id}
           render={({ onChange, value }) => (
             <Slider
@@ -88,7 +99,7 @@ const ParentalLeaveCalculations: FC<FieldBaseProps> = ({
         <Controller
           defaultValue=""
           rules={{ required: true }}
-          name={'approveSpreadCalculations'}
+          name="approveSpreadCalculations"
           render={({ onChange, value }) => (
             <Box display="flex" marginTop={3}>
               <Box marginRight={5}>
@@ -117,6 +128,13 @@ const ParentalLeaveCalculations: FC<FieldBaseProps> = ({
                   checked={value === false}
                 />
               </Box>
+              {approvalError && (
+                <Box color="red400" padding={2}>
+                  <Typography variant="pSmall" color="red400">
+                    {approvalError}
+                  </Typography>
+                </Box>
+              )}
             </Box>
           )}
         />

@@ -1,6 +1,5 @@
 import React, { FC } from 'react'
 import { FieldDef } from '../types'
-import { getValueViaPath } from '../utils'
 import { getComponentByName } from './componentLoader'
 import { FormValue } from '@island.is/application/template'
 
@@ -23,11 +22,10 @@ const FormField: FC<{
     return null
   }
 
-  const error = getValueViaPath(errors, field.id, undefined)
   const fieldProps = {
     applicationId,
     autoFocus,
-    error,
+    errors,
     field,
     formValue,
     showFieldName,

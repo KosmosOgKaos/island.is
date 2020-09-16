@@ -9,7 +9,7 @@ import {
 export interface FieldBaseProps {
   applicationId?: string
   autoFocus?: boolean
-  error?: string
+  errors: object
   field: Field
   formValue: FormValue
   showFieldName?: boolean

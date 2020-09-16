@@ -8,7 +8,7 @@ import { Box, Typography } from '@island.is/island-ui/core'
 import * as styles from './Usage.treat'
 import { theme } from '@island.is/island-ui/theme'
 
-const ParentalLeaveUsage: FC<FieldBaseProps> = ({ field }) => {
+const ParentalLeaveUsage: FC<FieldBaseProps> = ({ formValue, field }) => {
   const defaultUsage = 4
   const { id } = field
   const { clearErrors } = useFormContext()
@@ -22,7 +22,7 @@ const ParentalLeaveUsage: FC<FieldBaseProps> = ({ field }) => {
         <Box
           className={styles.key}
           style={{ background: theme.color.blue400 }}
-        ></Box>
+        />
         <Typography variant="p">
           Sjálfstæður réttur hvors foreldris fyrir sig er 3 mánuðir (90 dagar).
         </Typography>
@@ -31,14 +31,14 @@ const ParentalLeaveUsage: FC<FieldBaseProps> = ({ field }) => {
         <Box
           className={styles.key}
           style={{ background: theme.color.mint400 }}
-        ></Box>
+        />
         <Typography variant="p">
           Sameiginlegur réttur foreldra er 3 mánuðir (90 dagar).
         </Typography>
       </Box>
       <Box marginTop={6}>
         <Controller
-          defaultValue=""
+          defaultValue={defaultUsage}
           name={id}
           render={({ onChange, value }) => (
             <Slider
