@@ -1,7 +1,7 @@
 import React, { useState, useEffect, ReactNode } from 'react'
 import {  Box,  
   Button, 
-  SidebarAccordion, RadioButton, ContentBlock, Columns, Column 
+  SidebarAccordion, RadioButton, ContentBlock, Columns, Column, GridRow, GridColumn 
 } from '@island.is/island-ui/core'
 
 import {  
@@ -35,18 +35,20 @@ interface PropTypes {
 export function ServiceLayout({ top, left, right }: PropTypes) {
   return (
     <Box paddingX="gutter">
-      <ContentBlock >
+      {<ContentBlock >
         {top}
-      </ContentBlock>
+      </ContentBlock>}
       <ContentBlock>
-        <Columns align="right" space="gutter" collapseBelow="lg">
-          <Column width="8/12">{left}</Column>
-          <Column width="3/12">
-            <Box paddingLeft={[0, 0, 0, 8, 15]} width="full">
+        <GridRow >
+          <GridColumn span={['12/12', '8/12',  '8/12', '8/12', '8/12']}
+                    offset={[    '0',     '0',     '0', '1/12', '1/12']}>
+            {left}
+          </GridColumn>
+          <GridColumn span={[ '6/12',  '3/12',  '3/12', '2/12', '2/12']}
+          offset={[           '1/12',     '0',     '0', '1/12', '1/12']}>
               {right}
-            </Box>
-          </Column>
-        </Columns>
+          </GridColumn>
+        </GridRow>
       </ContentBlock>
     </Box>
   )
@@ -187,8 +189,7 @@ export default function ServiceList(props:ServiceListProps) {
         </div>
       }
       left={
-          <Box marginBottom="containerGutter" marginTop={1}>
-                <Box>
+          <Box className={cn(styles.sericeList, "BALLER")} marginBottom="containerGutter" marginTop={1}>
                     {
                       services?.map( (item, index) => {
                         return <ServiceCard key={index} service={item} />
@@ -199,7 +200,6 @@ export default function ServiceList(props:ServiceListProps) {
                       Sækja fleiri
                     </Button>
                   </div>
-                </Box>
                 
           </Box>
       } 
