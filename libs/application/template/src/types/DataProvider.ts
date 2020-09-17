@@ -8,6 +8,7 @@ export enum DataProviderTypes {
   ExpectedDateOfBirth = 'ExpectedDateOfBirth',
   ExampleFails = 'ExampleFails',
   ExampleSucceeds = 'ExampleSucceeds',
+  ParentalLeaveSalary = 'ParentalLeaveSalary',
 }
 
 export abstract class DataProvider {

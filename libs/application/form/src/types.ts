@@ -3,7 +3,7 @@ import {
   FormValue,
   MultiField,
   ExternalDataProvider,
-  Repeater,
+  Repeater,, ExternalData
 } from '@island.is/application/template'
 
 export interface FieldBaseProps {
@@ -12,6 +12,7 @@ export interface FieldBaseProps {
   errors: object
   field: Field
   formValue: FormValue
+  externalData: ExternalData
   showFieldName?: boolean
 }
 

@@ -15,16 +15,18 @@ const ParentalLeaveCalculations: FC<FieldBaseProps> = ({
   errors,
   field,
   formValue,
+  externalData,
 }) => {
   const { id } = field
   const { clearErrors } = useFormContext()
-  const [amount, setAmount] = useState<number>(294.037)
+
+  // const [amount, setAmount] = useState<number>(externalData.salary)
+  const [amount, setAmount] = useState<number>(1000000)
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
   const monthsToUse = (formValue.usage as number) || 1
   const [monthsToSpread, setMonthsToSpread] = useState<number | undefined>(null)
-
   const maxMonths = 24
 
   useEffect(() => {
@@ -57,13 +59,12 @@ const ParentalLeaveCalculations: FC<FieldBaseProps> = ({
       </Typography>
       <Box marginTop={8}>
         <Controller
-          defaultValue={monthsToSpread}
+          defaultValue={monthsToUse}
           name={id}
           render={({ onChange, value }) => (
             <Slider
               min={monthsToUse}
               max={maxMonths}
-              step={1}
               snap={false}
               trackStyle={{ gridTemplateRows: 8 }}
               calculateCellStyle={(index: number) => {

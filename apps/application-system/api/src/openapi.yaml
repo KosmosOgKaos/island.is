@@ -116,6 +116,7 @@ components:
             - ExpectedDateOfBirth
             - ExampleFails
             - ExampleSucceeds
+            - ParentalLeaveSalary
       required:
         - id
         - type

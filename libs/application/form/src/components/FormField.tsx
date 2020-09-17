@@ -1,12 +1,13 @@
 import React, { FC } from 'react'
 import { FieldDef } from '../types'
 import { getComponentByName } from './componentLoader'
-import { FormValue } from '@island.is/application/template'
+import { ExternalData, FormValue } from '@island.is/application/template'
 
 const FormField: FC<{
   applicationId: string
   autoFocus?: boolean
   field: FieldDef
+  externalData: ExternalData
   formValue: FormValue
   showFieldName?: boolean
   errors: object
@@ -14,6 +15,7 @@ const FormField: FC<{
   applicationId,
   autoFocus,
   errors,
+  externalData,
   field,
   formValue,
   showFieldName,
@@ -26,6 +28,7 @@ const FormField: FC<{
     applicationId,
     autoFocus,
     errors,
+    externalData,
     field,
     formValue,
     showFieldName,

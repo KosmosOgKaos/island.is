@@ -1,5 +1,6 @@
 import { ExpectedDateOfBirth } from './ExpectedDateOfBirth'
 import { ExampleSucceeds } from './ExampleSucceeds'
+import { ParentalLeaveSalary } from './ParentalLeaveSalary'
 import {
   DataProvider,
   DataProviderTypes,
@@ -8,6 +9,7 @@ import {
 const typeMap = {
   [DataProviderTypes.ExpectedDateOfBirth]: ExpectedDateOfBirth,
   [DataProviderTypes.ExampleSucceeds]: ExampleSucceeds,
+  [DataProviderTypes.ParentalLeaveSalary]: ParentalLeaveSalary,
 }
 
 export function getDataProviderByType(

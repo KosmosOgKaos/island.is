@@ -36,7 +36,7 @@ export const ParentalLeaveForm: Form = buildForm({
             }),
             buildDataProviderItem({
               id: 'salary',
-              type: DataProviderTypes.ExampleSucceeds,
+              type: DataProviderTypes.ParentalLeaveSalary,
               source: 'Success indeed',
               subTitle:
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',

@@ -141,6 +141,7 @@ const Screen: FC<ScreenProps> = ({
               <FormMultiField
                 answerQuestions={answerQuestions}
                 errors={errors}
+                externalData={externalData}
                 multiField={screen}
                 formValue={formValue}
                 applicationId={applicationId}
@@ -157,6 +158,7 @@ const Screen: FC<ScreenProps> = ({
               <FormField
                 autoFocus
                 errors={errors}
+                externalData={externalData}
                 field={screen}
                 formValue={formValue}
                 applicationId={applicationId}
