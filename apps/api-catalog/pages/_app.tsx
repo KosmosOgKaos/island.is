@@ -2,6 +2,8 @@ import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import React from 'react'
 
+import cn from 'classnames'
+
 import { 
   Page,
   Box,
@@ -9,6 +11,8 @@ import {
   Footer
 } from '@island.is/island-ui/core'
 import { Header } from '../components'
+
+import * as  styles from '../styles/_app.treat'
 
 import '../styles/global-styles.scss'
 
@@ -58,7 +62,9 @@ function MyApp({ Component, pageProps }: AppProps) {
           <Header />
         </ContentBlock>
       </Box>
+      <div className={cn(styles.content)}>
       <Component {...pageProps} />
+      </div>
       <Footer 
         hideLanguageSwith
       />
