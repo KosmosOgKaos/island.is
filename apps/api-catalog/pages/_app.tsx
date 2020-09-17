@@ -2,6 +2,8 @@ import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import React from 'react'
 
+import cn from 'classnames'
+
 import { 
   Page,
   Box,
@@ -9,6 +11,8 @@ import {
   Footer
 } from '@island.is/island-ui/core'
 import { Header } from '../components'
+
+import * as  styles from '../styles/_app.treat'
 
 import '../styles/global-styles.scss'
 import { ApolloProvider } from 'react-apollo'
@@ -64,14 +68,15 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
             <Header />
           </ContentBlock>
         </Box>
-        <Component {...pageProps} />
+        <div className={cn(styles.content)}>
+          <Component {...pageProps} />
+        </div>
         <Footer 
           hideLanguageSwith
         />
       </Page>
     </ApolloProvider>
   )
-  
 }
 
 export default MyApp
