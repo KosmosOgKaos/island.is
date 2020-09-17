@@ -9,6 +9,10 @@ export interface ServicesResult {
     nextCursor:number;
 }
 
+export interface ServiceResult {
+    result:ServiceCardInformation,
+}
+
 export enum SERVICE_SEARCH_METHOD {
     MUST_CONTAIN_ONE_OF_CATEGORY,
     MUST_CONTAIN_ONE_OF_EACH_CATEGORY
@@ -162,6 +166,18 @@ const ParameterArraysContainsOneOrMoreOf = (service:ServiceCardInformation, para
     }
 }
 
+export async function getService(id: number):Promise<ServiceResult> {
+    await timeout(500);
+    const filter = OrgServices.filter( e => {
+        return e.id === Number(id)
+    });
+    if (filter.length < 1){
+        return { result:null};
+    } 
+
+    return { result:filter[0] };
+    
+}
 
 export async function getServices(parameters:GetServicesParameters):Promise<ServicesResult> {
     
