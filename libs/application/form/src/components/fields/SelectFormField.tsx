@@ -12,7 +12,7 @@ const SelectFormField: FC<Props> = ({
   showFieldName = false,
   field,
 }) => {
-  const { id, name, options, placeholder } = field
+  const { id, name, options, placeholder, disabled } = field
 
   return (
     <div>
@@ -22,6 +22,7 @@ const SelectFormField: FC<Props> = ({
           label={name}
           name={id}
           error={getValueViaPath(errors, id, undefined)}
+          disabled={disabled}
           id={id}
           options={options}
           placeholder={placeholder}

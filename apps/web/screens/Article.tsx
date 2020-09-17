@@ -108,7 +108,7 @@ const RelatedArticles: FC<{
   return (
     <SidebarBox>
       <Stack space={[1, 1, 2]}>
-        <Typography variant="h4" as="h4">
+        <Typography variant="h4" as="h2">
           {title}
         </Typography>
         <Divider weight="alternate" />
@@ -240,7 +240,7 @@ const ArticleNavigation: FC<{ title: string; article: Article }> = ({
       {bullet && <Bullet align="left" top={bullet.offsetTop} />}
 
       <Stack space={[1, 1, 2]}>
-        <Typography variant="h4" as="h4">
+        <Typography variant="h4" as="h2">
           {title}
         </Typography>
         <Divider weight="alternate" />
@@ -359,19 +359,19 @@ const ArticleScreen: Screen<ArticleProps> = ({ article, namespace }) => {
             <Breadcrumbs>
               <Link href={makePath()}>Ísland.is</Link>
               <Link
-                href={`${makePath('category')}/[slug]`}
-                as={makePath('category', article.category.slug)}
+                href={`${makePath('ArticleCategory')}/[slug]`}
+                as={makePath('ArticleCategory', article.category.slug)}
               >
                 {article.category.title}
               </Link>
               {article.group && (
                 <Link
                   as={makePath(
-                    'category',
+                    'ArticleCategory',
                     article.category.slug +
                       (article.group?.slug ? `#${article.group.slug}` : ''),
                   )}
-                  href={makePath('category', '[slug]')}
+                  href={makePath('ArticleCategory', '[slug]')}
                 >
                   <Tag variant="blue">{article.group.title}</Tag>
                 </Link>

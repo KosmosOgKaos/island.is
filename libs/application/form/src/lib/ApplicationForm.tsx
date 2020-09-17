@@ -42,7 +42,6 @@ export const ApplicationForm: FC<{ application: Application }> = ({
     activeScreen,
     application: storedApplication,
     form,
-
     sections,
     screens,
     dataSchema,

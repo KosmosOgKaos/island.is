@@ -13,7 +13,7 @@ const RadioFormField: FC<Props> = ({
   errors,
   formValue,
 }) => {
-  const { id, name, options } = field
+  const { disabled, id, name, options } = field
   return (
     <div>
       {showFieldName && <Typography variant="p">{name}</Typography>}
@@ -21,6 +21,7 @@ const RadioFormField: FC<Props> = ({
         <RadioController
           id={id}
           error={getValueViaPath(errors, id, undefined)}
+          disabled={disabled}
           name={`${id}`}
           defaultValue={getValueViaPath(formValue, id)}
           options={options}
