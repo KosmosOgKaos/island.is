@@ -1,5 +1,5 @@
 import {SERVICE_STATUS } from  '..'
-import { ServiceCardInformation } from '../ServiceCard/service-card';
+import { ServiceCardInformation } from '../ServiceCard/ServiceCard';
 
 const MAX_LIMIT = 3;
 

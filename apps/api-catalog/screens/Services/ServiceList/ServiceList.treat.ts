@@ -1,6 +1,11 @@
 import { style } from 'treat'
 
 
+export const serviceList = style ({
+  /*background:'yellow',
+  justifyContent:'center'*/
+})
+
 export const filter = style({
   marginTop:10
 })
@@ -21,11 +26,9 @@ export const radioButton = style({
 export const topSectionText = style({
   fontSize:24,
   margin: 'auto',
-  width:600, 
-  padding: 10
+  padding: 10,
+  maxWidth:600
 })
-
-
 
 export const topSection = style({
   marginBottom:40,
