@@ -69,7 +69,8 @@ export function DataProviderDtoToJSON(value?: DataProviderDto | null): any {
 export enum DataProviderDtoTypeEnum {
     ExpectedDateOfBirth = 'ExpectedDateOfBirth',
     ExampleFails = 'ExampleFails',
-    ExampleSucceeds = 'ExampleSucceeds'
+    ExampleSucceeds = 'ExampleSucceeds',
+    ParentalLeaveSalary = 'ParentalLeaveSalary'
 }
 
 

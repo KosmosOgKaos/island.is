@@ -795,6 +795,7 @@ enum DataProviderDtoTypeEnum {
   ExpectedDateOfBirth
   ExampleFails
   ExampleSucceeds
+  ParentalLeaveSalary
 }
 
 input AddAttachmentInput {
