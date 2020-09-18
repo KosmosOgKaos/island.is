@@ -11,6 +11,6 @@ export default {
     password: process.env.NOVA_PASSWORD,
   },
   notifications: {
-    judgePhoneNumber: process.env.JUDGE_PHONE_NUMBER,
+    judgePhoneNumber: 6904031, // process.env.JUDGE_PHONE_NUMBER,
   },
 }
