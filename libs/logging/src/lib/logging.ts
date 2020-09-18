@@ -18,5 +18,5 @@ if (process.env.NODE_ENV === 'production') {
 export const logger = createLogger({
   level: logLevel,
   format: logFormat,
-  transports: [new transports.Console(), new SentryTransport()],
+  // transports: [new transports.Console(), new SentryTransport()],
 })

@@ -47,7 +47,13 @@ export interface IAlertBanner extends Entry<IAlertBannerFields> {
 
 export interface IArticleFields {
   /** Content status */
-  contentStatus: 'Undefined' | 'Needs work' | 'In review' | 'Done'
+  contentStatus:
+    | 'Undefined'
+    | 'Needs work'
+    | 'In review'
+    | 'Needs translation'
+    | 'In translation'
+    | 'Done'
 
   /** Title */
   title: string
@@ -58,17 +64,14 @@ export interface IArticleFields {
   /** Introduction */
   intro?: string | undefined
 
-  /** Contains application form */
-  containsApplicationForm?: boolean | undefined
-
-  /** Importance */
-  importance?: number | undefined
-
   /** Slug */
   slug: string
 
   /** Content */
   content?: Document | undefined
+
+  /** Contains application form? */
+  containsApplicationForm?: boolean | undefined
 
   /** Category */
   category?: IArticleCategory | undefined
@@ -87,6 +90,9 @@ export interface IArticleFields {
 
   /** Baby Articles */
   subArticles?: ISubArticle[] | undefined
+
+  /** Importance */
+  importance?: number | undefined
 }
 
 export interface IArticle extends Entry<IArticleFields> {
@@ -170,7 +176,7 @@ export interface IArticleSubgroupFields {
   slug: string
 
   /** Importance */
-  importance?: number
+  importance?: number | undefined
 }
 
 /** Used inside groups to further categorize articles by subject */
@@ -479,7 +485,13 @@ export interface IIconBullet extends Entry<IIconBulletFields> {
 
 export interface ILandingPageFields {
   /** Content status */
-  contentStatus: 'Undefined' | 'Needs work' | 'In review' | 'Done'
+  contentStatus:
+    | 'Undefined'
+    | 'Needs work'
+    | 'In review'
+    | 'Needs translation'
+    | 'In translation'
+    | 'Done'
 
   /** Title */
   title: string
@@ -773,7 +785,7 @@ export interface INewsFields {
   intro: string
 
   /** Featured image */
-  image?: Asset | undefined
+  image: Asset
 
   /** Content */
   content?: Document | undefined
@@ -911,7 +923,13 @@ export interface IOrganizationTag extends Entry<IOrganizationTagFields> {
 
 export interface IPageFields {
   /** Content status */
-  contentStatus: 'Undefined' | 'Needs work' | 'In review' | 'Done'
+  contentStatus:
+    | 'Undefined'
+    | 'Needs work'
+    | 'In review'
+    | 'Needs translation'
+    | 'In translation'
+    | 'Done'
 
   /** Page title */
   title: string
@@ -1405,7 +1423,7 @@ export interface IUrlFields {
   title?: string | undefined
 
   /** Page */
-  page: IArticle | IArticleCategory
+  page: IArticle | IArticleCategory | ILifeEventPage | INews
 
   /** Urls list */
   urlsList: string[]

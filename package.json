@@ -34,7 +34,8 @@
     "dep-graph": "nx dep-graph",
     "help": "nx help",
     "storybook:island-ui": "nx run island-ui-storybook:storybook",
-    "ts-node": "node -r ./scripts/ts-node"
+    "ts-node": "node -r ./scripts/ts-node",
+    "postinstall": "./scripts/codegen.sh"
   },
   "dependencies": {
     "@apollo/client": "3.1.3",
