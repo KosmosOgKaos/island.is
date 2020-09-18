@@ -202,6 +202,7 @@ const Search: Screen<CategoryProps> = ({
                 }}
               >
                 <Filter
+                  truncate
                   selected={!filters.category}
                   onClick={() => onSelectCategory(null)}
                   text={`${n('allCategories', 'Allir flokkar')} (${
@@ -215,6 +216,10 @@ const Search: Screen<CategoryProps> = ({
                   {sidebarCategories.map((c, index) => {
                     const selected = c.key === filters.category
                     const text = `${c.title} (${c.total})`
+
+                    if (c.key === 'uncategorized') {
+                      return null
+                    }
 
                     return (
                       <Filter
@@ -373,7 +378,7 @@ Search.getInitialProps = async ({ apolloClient, locale, query }) => {
   }
 }
 
-const Filter = ({ selected, text, onClick, ...props }) => {
+const Filter = ({ selected, text, onClick, truncate = false, ...props }) => {
   return (
     <Box
       display="inlineBlock"
@@ -385,7 +390,7 @@ const Filter = ({ selected, text, onClick, ...props }) => {
       onClick={onClick}
       {...props}
     >
-      <Typography variant="p" as="div" truncate>
+      <Typography variant="p" as="div" truncate={truncate}>
         {selected ? <strong>{text}</strong> : text}
       </Typography>
     </Box>
