@@ -2,9 +2,9 @@ import React from 'react';
 import { Layout } from '../../components';
 import {
   Box,
-  Breadcrumbs, 
-  Stack, 
-  Typography, 
+  Breadcrumbs,
+  Stack,
+  Typography,
   Button,
   Link
 } from '@island.is/island-ui/core';

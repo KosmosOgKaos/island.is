@@ -599,6 +599,47 @@ export type DocumentCategory = {
   name: Scalars['String']
 }
 
+export type ApiCatalogue = {
+  __typename?: 'ApiCatalogue'
+  id: Scalars['ID']
+  owner: Scalars['String']
+  serviceName: Scalars['String']
+  description: Scalars['String']
+  url: Scalars['String']
+  pricing: PricingCategoryEnum
+  data: DataCategoryEnum
+  type: TypeCategoryEnum
+  access: AccessCategoryEnum
+}
+
+export enum PricingCategoryEnum {
+  Free = 'FREE',
+  Usage = 'USAGE',
+  Daily = 'DAILY',
+  Monthly = 'MONTHLY',
+  Yearly = 'YEARLY',
+  Custom = 'CUSTOM',
+}
+
+export enum DataCategoryEnum {
+  Public = 'PUBLIC',
+  Official = 'OFFICIAL',
+  Personal = 'PERSONAL',
+  Health = 'HEALTH',
+  Financial = 'FINANCIAL',
+}
+
+export enum TypeCategoryEnum {
+  Rest = 'REST',
+  Soap = 'SOAP',
+  Graphql = 'GRAPHQL',
+}
+
+export enum AccessCategoryEnum {
+  Xroad = 'XROAD',
+  Apigw = 'APIGW',
+}
+
 export type Query = {
   __typename?: 'Query'
   helloWorld: HelloWorld
@@ -632,6 +673,8 @@ export type Query = {
   getDocument?: Maybe<DocumentDetails>
   listDocuments?: Maybe<Array<Document>>
   getDocumentCategories?: Maybe<Array<DocumentCategory>>
+  getApiCatalogues: Array<ApiCatalogue>
+  getApiCatalogueById: ApiCatalogue
 }
 
 export type QueryHelloWorldArgs = {
@@ -752,6 +795,10 @@ export type QueryGetDocumentArgs = {
 
 export type QueryListDocumentsArgs = {
   input: ListDocumentsInput
+}
+
+export type QueryGetApiCatalogueByIdArgs = {
+  input: GetApiCatalogueInput
 }
 
 export type HelloWorldInput = {
@@ -918,6 +965,10 @@ export type ListDocumentsInput = {
   category: Scalars['String']
   page: Scalars['Float']
   pageSize: Scalars['Float']
+}
+
+export type GetApiCatalogueInput = {
+  id: Scalars['ID']
 }
 
 export type Mutation = {
@@ -1257,6 +1308,11 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   DocumentDetails: ResolverTypeWrapper<DocumentDetails>
   DocumentCategory: ResolverTypeWrapper<DocumentCategory>
+  ApiCatalogue: ResolverTypeWrapper<ApiCatalogue>
+  PricingCategoryEnum: PricingCategoryEnum
+  DataCategoryEnum: DataCategoryEnum
+  TypeCategoryEnum: TypeCategoryEnum
+  accessCategoryEnum: AccessCategoryEnum
   Query: ResolverTypeWrapper<{}>
   HelloWorldInput: HelloWorldInput
   SearcherInput: SearcherInput
@@ -1290,6 +1346,7 @@ export type ResolversTypes = {
   GetApplicationsByTypeInput: GetApplicationsByTypeInput
   GetDocumentInput: GetDocumentInput
   ListDocumentsInput: ListDocumentsInput
+  GetApiCatalogueInput: GetApiCatalogueInput
   Mutation: ResolverTypeWrapper<{}>
   CreateApplicationInput: CreateApplicationInput
   CreateApplicationDtoStateEnum: CreateApplicationDtoStateEnum
@@ -1410,6 +1467,7 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']
   DocumentDetails: DocumentDetails
   DocumentCategory: DocumentCategory
+  ApiCatalogue: ApiCatalogue
   Query: {}
   HelloWorldInput: HelloWorldInput
   SearcherInput: SearcherInput
@@ -1441,6 +1499,7 @@ export type ResolversParentTypes = {
   GetApplicationsByTypeInput: GetApplicationsByTypeInput
   GetDocumentInput: GetDocumentInput
   ListDocumentsInput: ListDocumentsInput
+  GetApiCatalogueInput: GetApiCatalogueInput
   Mutation: {}
   CreateApplicationInput: CreateApplicationInput
   UpdateApplicationInput: UpdateApplicationInput
@@ -2424,6 +2483,30 @@ export type DocumentCategoryResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType>
 }
 
+export type ApiCatalogueResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['ApiCatalogue'] = ResolversParentTypes['ApiCatalogue']
+> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+  owner?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  serviceName?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  url?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  pricing?: Resolver<
+    ResolversTypes['PricingCategoryEnum'],
+    ParentType,
+    ContextType
+  >
+  data?: Resolver<ResolversTypes['DataCategoryEnum'], ParentType, ContextType>
+  type?: Resolver<ResolversTypes['TypeCategoryEnum'], ParentType, ContextType>
+  access?: Resolver<
+    ResolversTypes['accessCategoryEnum'],
+    ParentType,
+    ContextType
+  >
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>
+}
+
 export type QueryResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
@@ -2613,6 +2696,17 @@ export type QueryResolvers<
     ParentType,
     ContextType
   >
+  getApiCatalogues?: Resolver<
+    Array<ResolversTypes['ApiCatalogue']>,
+    ParentType,
+    ContextType
+  >
+  getApiCatalogueById?: Resolver<
+    ResolversTypes['ApiCatalogue'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryGetApiCatalogueByIdArgs, 'input'>
+  >
 }
 
 export type MutationResolvers<
@@ -2727,6 +2821,7 @@ export type Resolvers<ContextType = Context> = {
   Document?: DocumentResolvers<ContextType>
   DocumentDetails?: DocumentDetailsResolvers<ContextType>
   DocumentCategory?: DocumentCategoryResolvers<ContextType>
+  ApiCatalogue?: ApiCatalogueResolvers<ContextType>
   Query?: QueryResolvers<ContextType>
   Mutation?: MutationResolvers<ContextType>
 }

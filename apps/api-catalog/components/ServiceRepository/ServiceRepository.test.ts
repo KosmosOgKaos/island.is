@@ -1,4 +1,4 @@
-import {getServices, GetServicesParameters} from './service-repository'
+import {getServices, GetServicesParameters} from './ServiceRepository'
 
 
 describe('ServiceRepository', ()=>{
@@ -18,8 +18,8 @@ describe('ServiceRepository', ()=>{
         searchMethod:null
       }
       const ret = await getServices(params);
-      expect(ret.result[0].id).toBe(0);
-      expect(ret.result[1].id).toBe(1);
+      expect(ret.result[0].id).toBe('0');
+      expect(ret.result[1].id).toBe('1');
     })
   });
 });

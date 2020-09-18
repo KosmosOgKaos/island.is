@@ -578,8 +578,8 @@ type Query {
   getDocument(input: GetDocumentInput!): DocumentDetails
   listDocuments(input: ListDocumentsInput!): [Document!]
   getDocumentCategories: [DocumentCategory!]
-  catalogues: [ApiCatalogue!]!
-  getCatalogueById(input: GetApiCatalogueInput!): ApiCatalogue!
+  getApiCatalogues: [ApiCatalogue!]!
+  getApiCatalogueById(input: GetApiCatalogueInput!): ApiCatalogue!
 }
 
 input HelloWorldInput {
