@@ -19,7 +19,7 @@ const playground = debug || process.env.GQL_PLAYGROUND_ENABLED === 'true'
     GraphQLModule.forRoot({
       debug,
       playground,
-      autoSchemaFile: 'apps/air-discount-scheme/api.graphql',
+      autoSchemaFile: 'apps/air-discount-scheme/api.graphql', // TODO shared env
       path: '/api/graphql',
       context: ({ req }) => ({ req }),
       dataSources: () => ({

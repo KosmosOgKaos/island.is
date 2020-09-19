@@ -61,7 +61,7 @@ export interface IArticleFields {
   /** Short title */
   shortTitle?: string | undefined
 
-  /** Introduction */
+  /** Summary */
   intro?: string | undefined
 
   /** Slug */

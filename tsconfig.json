@@ -119,7 +119,8 @@
         "libs/judicial-system/consts/src/index.ts"
       ],
       "@island.is/elastic-indexing": ["libs/elastic-indexing/src/index.ts"],
-      "@island.is/nova-sms": ["libs/nova-sms/src/index.ts"]
+      "@island.is/nova-sms": ["libs/nova-sms/src/index.ts"],
+      "@island.is/generate-schema": ["libs/generate-schema/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

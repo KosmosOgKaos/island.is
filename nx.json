@@ -242,6 +242,9 @@
     },
     "nova-sms": {
       "tags": []
+    },
+    "generate-schema": {
+      "tags": []
     }
   }
 }

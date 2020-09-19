@@ -9,7 +9,11 @@
 //
 //      yarn ts-node
 
+require('dotenv').config()
 require('ts-node').register({
-  compilerOptions: { module: 'commonjs', esModuleInterop: true },
+  compilerOptions: {
+    module: 'commonjs',
+    esModuleInterop: true,
+  },
 })
 require('tsconfig-paths').register()
