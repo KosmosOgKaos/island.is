@@ -93,7 +93,8 @@ const run = async () => {
   }
 
   if (excludes.find((app) => app !== 'api')) {
-    // We need this first to be able to generate api/api.graphql
+    console.log('-coucou')
+    await exec('yarn nx run api:codegen')
     await exec('yarn nx run api:contentful-types')
 
     await generateSchema({
@@ -109,7 +110,6 @@ const run = async () => {
       ],
     })
 
-    await exec('yarn nx run api:codegen')
     await exec('yarn nx run web:codegen')
   }
 

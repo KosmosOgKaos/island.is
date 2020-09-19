@@ -14,6 +14,8 @@ require('ts-node').register({
   compilerOptions: {
     module: 'commonjs',
     esModuleInterop: true,
+    noUnusedLocals: false,
+    strict: false,
   },
 })
 require('tsconfig-paths').register()
